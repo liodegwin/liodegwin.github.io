@@ -55,7 +55,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2022-01-01 14:38:28'
+  postUpdate: '2022-01-01 14:43:44'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -177,7 +177,7 @@ linux读写硬盘的实际情况是，读的硬盘数据对应的高速缓冲区
 如何移植
 2 Linux文件系统的作用
 管理磁盘数据：磁盘中的文件通过文件系统形成了目录结构，方便管理
-操作硬件：Linux ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/12/17/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理">     <img class="post_bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/20211219221455.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内核3:进程管理"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/17/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理">Linux内核3:进程管理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-16T17:31:54.056Z" title="发表于 2021-12-17 01:31:54">2021-12-17</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-01T06:21:43.847Z" title="更新于 2022-01-01 14:21:43">2022-01-01</time></span></div><div class="content">1进程运转方式总结：大概就是每10ms进定时器中断，在中断函数do_timer 中，进行进程的调度等操作。
+操作硬件：Linux ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/12/17/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理">     <img class="post_bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/grizzly-bears-playing-sparring-63325.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内核3:进程管理"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/17/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理">Linux内核3:进程管理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-16T17:31:54.056Z" title="发表于 2021-12-17 01:31:54">2021-12-17</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-01T06:43:37.467Z" title="更新于 2022-01-01 14:43:37">2022-01-01</time></span></div><div class="content">1进程运转方式总结：大概就是每10ms进定时器中断，在中断函数do_timer 中，进行进程的调度等操作。
 详细：
 系统时间（jiffies 系统滴答）
 CPU内部RTC定时器，会在上电的时候调用mktime函数，算出距离1970年的秒数。在mktime.c中实现。long kernel_mktime(struct tm * tm)，tm是由硬件RTC（CMOS）传入的，计算完了会保存在全局变量startup_time（sched.c）中，被系统滴答所用jiffies，
