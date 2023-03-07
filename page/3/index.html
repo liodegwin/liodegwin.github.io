@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/page/3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-03-07 22:30:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Hexo</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/02/28/vnc%E8%BF%9E%E6%8E%A5Linux%E5%92%8CMac/" title="No title">No title</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-02-28T11:09:29.954Z" title="Created 2022-02-28 19:09:29">2022-02-28</time></span></div><div class="content">vnc连接linux和mac
+
+目标：在主力机mac上使用远程桌面控制linux主机，因为linux图形界面太拉垮了，不适合作为主力，但是工作还是linux为主，所以我希望在mac上能够访问到我的linux主机。不单单是ssh的命令行方式，还包括完整的图形界面控制的方式。
+
+vnc是什么：
+wikihttps://en.wikipedia.org/wiki/Virtual_Network_Computing
+是一种系统，使用网络协议
+
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/01/17/Linux%E5%86%85%E6%A0%B8%E7%BC%93%E5%AD%98%E5%92%8C%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86md/" title="分页机制和页面高速缓存"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-leif-blessing-7001094.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="分页机制和页面高速缓存"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/17/Linux%E5%86%85%E6%A0%B8%E7%BC%93%E5%AD%98%E5%92%8C%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86md/" title="分页机制和页面高速缓存">分页机制和页面高速缓存</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-17T12:53:38.184Z" title="Created 2022-01-17 20:53:38">2022-01-17</time></span></div><div class="content">分页机制和页面高速缓存分页机制分页机制是在段机制之后进行的，以完成线性-物理地址的转换过程。段机制完成逻辑地址转换成线性地址
+
+分页机制由CR0中的PG位启用，如果PG&#x3D;1，启用分页机制。PG&#x3D;0，禁用分页机制，直击把段机制产生的线性地址当作物理地址使用
+分页机制管理的对象是固定大小的存储快，称之为页page，线性地址空间是由页组成的。分页机制就是把线性地址空间当中的页和物理地址空间中的页，建立一个映射。
+在80386中，页的大小为4kByte，在4kByte的边界对其，也就是说，每一页的起始地址都能被4k整除。因此分页机制，将线性地址空间的页，映射到物理地址空间，进行管理，以4k一个单位进行映射。
+对于程序开发来说，分页是将程序分成若干相同大小的页，每页4k字节。两级页表结构如下图所示：
+
+页目录表最多可包含1024个页目录项，每个页目录项为4Byte
+31-12:页目录表的地址（页表）  也就是高位的20个地址， 由于页表地址的低12位总为零，所以用高20位指出32位页表地址。
+</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/01/17/Linux%E5%86%85%E6%A0%B8%E5%9C%A8os%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%AD%89%E5%86%85%E5%AE%B9/" title="Linux内核在os中的位置等内容"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-gilberto-olimpio-7329775.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内核在os中的位置等内容"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/17/Linux%E5%86%85%E6%A0%B8%E5%9C%A8os%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%AD%89%E5%86%85%E5%AE%B9/" title="Linux内核在os中的位置等内容">Linux内核在os中的位置等内容</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-17T12:51:41.821Z" title="Created 2022-01-17 20:51:41">2022-01-17</time></span></div><div class="content">内核在操作系统中的位置,作用，组成内核的位置Linux操作系统由4部分组成，&#x3D;&#x3D;上层依赖下层&#x3D;&#x3D;
+
+用户进程：运行在linux操作系统的最高层的软件集合
+系统调用接口（运行在内核态，系统调用是内核代码的一部分，）
+Linux内核：管理文件，内存，网络等
+硬件：cpu，内存，硬盘，键盘等
+内核的作用从软件工程师的角度，操作系统内核，提供一个和计算机硬件等价的扩展或虚拟的计算平台，普通用户把操作系统看成是以恶资源管理者。linux以统一的方式支持任务，而这种方式对用户是透明的，每个进程运行起来就好像是只有他自己一个进程运行在计算机上一样，独占内存和其他的硬件资源，不需要操心其他的事情。
+内核的组成内核主要由5个子系统组成，之间的结构如下图
+
+进程调度：控制着进程对cpu的访问
+内存管理：允许多个进程安全地共享内存区域
+虚拟文件系统：隐藏不同的硬件设备的具体细节，为所有设备提供统一的接口
+网络：网络接口提供对各种网络标准协议的存取和各种网络硬件的支持
+进程间通信：IPC，支持进程间各种通信机制
+内核源码的结构include：建立内核代码时所需要的大部分 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/01/08/%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E8%AF%BB%E5%86%99%E7%9A%84%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="写一个可读写的字符设备驱动"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/cheetahs-cubs-two-together-162318.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="写一个可读写的字符设备驱动"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/08/%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E8%AF%BB%E5%86%99%E7%9A%84%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="写一个可读写的字符设备驱动">写一个可读写的字符设备驱动</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-08T06:12:54.385Z" title="Created 2022-01-08 14:12:54">2022-01-08</time></span></div><div class="content">说明内容来源于韦东山视频：数据交互，调试
+观察</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/01/03/%E5%86%99%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="写一个空的字符设备驱动"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-photo-3640872.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="写一个空的字符设备驱动"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/03/%E5%86%99%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="写一个空的字符设备驱动">写一个空的字符设备驱动</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-03T09:20:26.683Z" title="Created 2022-01-03 17:20:26">2022-01-03</time></span></div><div class="content">说明内容来源于韦东山视频：入口出口细讲，字符设备调用关系实验
+安装相关的头文件在写驱动程序的时候，需要用到很多内核的方法，这些方法在相关的内核源码中，因此需要安装相关的头文件，比如：register_chrdev，就是一个内核提供的方法
+1major = register_chrdev(0,&quot;led_drv&quot;,&amp;led_fops);
+在ubuntu中安装本操作系统内核版本的相关的内核头文件，命令如下：
+12apt-cache search linux-headers-$(uname -r) //确认有没有sudo apt-get install linux-headers-$(uname -r)//下载安装
+安装成功后：
+12345678book@100ask:~$ sudo apt-get install linux-headers-$(uname -r)[sudo] password for book:Reading package lists... DoneBuilding dependency treeReading state informatio ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/01/03/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/" title="编译的几个阶段和库的制作与使用"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-photo-7001092.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="编译的几个阶段和库的制作与使用"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/03/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/" title="编译的几个阶段和库的制作与使用">编译的几个阶段和库的制作与使用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-03T07:10:08.193Z" title="Created 2022-01-03 15:10:08">2022-01-03</time></span></div><div class="content">编译过程本文章将讲述对于c&#x2F;c++，从源代码生成可执行文件的过程。
+5个阶段
+
+
+阶段名称
+输入
+输出
+作用
+
+
+
+编写代码
+
+*.h  * . cpp   *.c   * .cc
+编写源文件头文件
+
+
+预编译
+*.h  * . cpp   *.c   * .cc
+*.i
+①展开头文件在写有#include 或#include “filename”的文件中，将文件filename展开，  通俗来说就是将fiename文件中的代码写入到当前文件中；②宏替换③去掉注释④条件编译即对#ifndef #define #endif进行判断检查，也正是在这一步，#ifndef #define #endif的作用体现出来，即防止头文件被多次重复引用
+
+
+编译
+*.i
+*.s
+①编译器在每个文件中保存一个函数地址符表，该表中存储着当前文件内包含的各个函数的地址；②因为这步要生成汇编代码，即一条一条的指令，而调用函数的代码会被编译成一条call指令，call指令后面跟的是jmp指令的汇编代码地址，而jmp指令后面跟的才是“被调用的函数编译成汇编代码后的第一条指令”的地址，但是给call指令后面 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/01/01/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/grizzly-bears-playing-sparring-63325.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内核3:进程管理"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/01/Linux%E5%86%85%E6%A0%B83%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="Linux内核3:进程管理">Linux内核3:进程管理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-01T06:43:37.467Z" title="Created 2022-01-01 14:43:37">2022-01-01</time></span></div><div class="content">1进程运转方式总结：大概就是每10ms进定时器中断，在中断函数do_timer 中，进行进程的调度等操作。
+详细：
+系统时间（jiffies 系统滴答）
+CPU内部RTC定时器，会在上电的时候调用mktime函数，算出距离1970年的秒数。在mktime.c中实现。long kernel_mktime(struct tm * tm)，tm是由硬件RTC（CMOS）传入的，计算完了会保存在全局变量startup_time（sched.c）中，被系统滴答所用jiffies，
+jiffies 系统滴答 
+10ms 10ms进定时器中断，中断函数timer_interrupt中jiffies自加，system_call.s中有代码
+12345678910111213141516171819202122_timer_interrupt:	push %ds		# save ds,es and put kernel data space	push %es		# into them. %fs is used by _system_call	push %fs	pushl %edx		# we save  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/01/01/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84/" title="Linux字符设备驱动架构"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-photo-767219.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux字符设备驱动架构"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/01/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84/" title="Linux字符设备驱动架构">Linux字符设备驱动架构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-01T06:38:23.911Z" title="Created 2022-01-01 14:38:23">2022-01-01</time></span></div><div class="content">Table of Contents  generated with DocToc
+
+说明
+应用程序如何使用驱动
+为什么open某一个文件，就能找到驱动
+怎么写驱动
+1. 确定主设备号（数组的索引），0的话为系统自动分配
+2. 构造结构体 file_operations
+3. 注册驱动
+4. 描述入口函数
+
+
+其他
+module_init是如何实现的
+次设备号有什么作用
+open的时候文件名是怎么传递给内核的
+编译进内核重名吗？
+
+
+
+
+说明该文章是liode学习笔记，根据https://www.bilibili.com/video/BV1Yb4y1t7Uj?p=4&amp;spm_id_from=pageDriver来做的总结
+应用程序如何使用驱动应用程序只能通过open,read,write等标准库函数来访问到驱动程序，不能直接访问到硬件，只有驱动程序能访问到硬件，因此，驱动程序要提供对应的drv_open,drv_read,drv_write等库函数对应的底层的驱动函数，来操作硬件。
+下面这些是应用程序可以做的：
+1234567891011121314151617181920212 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/01/01/Linux%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B/" title="Linux字符设备驱动流程"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-photo-761437.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux字符设备驱动流程"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/01/Linux%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B/" title="Linux字符设备驱动流程">Linux字符设备驱动流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-01T06:27:20.559Z" title="Created 2022-01-01 14:27:20">2022-01-01</time></span></div><div class="content">应用程序调用驱动的过程应用程序通过标准的库函数调用，内核会找到对应的驱动的相关函数，中间通过swi异常处理进行相应
+应用程序和驱动程序之间如何传递数据通过两个函数：
+</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/01/01/Linux%E5%86%85%E6%A0%B85%EF%BC%9A%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F2_%E5%86%85%E6%A0%B8%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%A1%94%E6%8E%A5/" title="Linux内核5:文件系统2_内核与文件系统衔接"><img class="post-bg" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/baozi1080p.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内核5:文件系统2_内核与文件系统衔接"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/01/Linux%E5%86%85%E6%A0%B85%EF%BC%9A%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F2_%E5%86%85%E6%A0%B8%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%A1%94%E6%8E%A5/" title="Linux内核5:文件系统2_内核与文件系统衔接">Linux内核5:文件系统2_内核与文件系统衔接</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2022-01-01T06:22:16.811Z" title="Created 2022-01-01 14:22:16">2022-01-01</time></span></div><div class="content">1 引言Linux文件系统和内核是相对独立的，一个内核可以安装不同的文件系统，那么文件系统与内核的衔接就变得十分重要，Linux内核是通过什么方式与各种文件系统进行衔接的？他们的工作流程是怎样的，这就是这篇文章想要分析的问题。
+2 文件系统的工作流程文件系统这个相对独立的部分有他自己的工作流程，他的起点是什么，目的是什么，这是这一章节希望理清楚的部分。
+2.1 起点分析所谓的起点，就是内核启动文件系统的代码了，以linux kernel  2.6.22的内核代码为例，主要的部分如下面所示。
+相关代码1：
+在文件系统的代码中，这里为起点，这是linux kernel  2.6.22的main.c中的一段代码
+12345if (sys_open((const char __user *) &quot;/dev/console&quot;, O_RDWR, 0) &lt; 0)   printk(KERN_WARNING &quot;Warning: unable to open an initial console.\n&quot;);(void) sys_dup(0);(void) sy ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/07/hello-world/" title="Hello World">Hello World</a><time datetime="2023-03-07T13:59:07.818Z" title="Created 2023-03-07 21:59:07">2023-03-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-karolina-wv-6929327.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符设备节点读写实验"/></a><div class="content"><a class="title" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验">字符设备节点读写实验</a><time datetime="2023-03-05T15:14:57.154Z" title="Created 2023-03-05 23:14:57">2023-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/14/%E6%97%B6%E9%97%B4/" title="时间"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-george-lebada-567540.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="时间"/></a><div class="content"><a class="title" href="/2022/12/14/%E6%97%B6%E9%97%B4/" title="时间">时间</a><time datetime="2022-12-14T15:02:01.997Z" title="Created 2022-12-14 23:02:01">2022-12-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/13/timer/" title="timer"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tina-nord-792416.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="timer"/></a><div class="content"><a class="title" href="/2022/12/13/timer/" title="timer">timer</a><time datetime="2022-12-13T15:57:07.758Z" title="Created 2022-12-13 23:57:07">2022-12-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/12/linux%20books/" title="linux books"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-hugo-heimendinger-1766217.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux books"/></a><div class="content"><a class="title" href="/2022/12/12/linux%20books/" title="linux books">linux books</a><time datetime="2022-12-12T15:30:14.820Z" title="Created 2022-12-12 23:30:14">2022-12-12</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">March 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">December 2022</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">November 2022</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">September 2022</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">June 2022</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">March 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">February 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/01/"><span class="card-archive-list-date">January 2022</span><span class="card-archive-list-count">10</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">31</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-03-07T14:30:51.461Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

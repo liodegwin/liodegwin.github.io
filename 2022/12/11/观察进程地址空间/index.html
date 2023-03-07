@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>观察进程地址空间 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在这篇文章中，我介绍了如何观察一个进程的地址空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="观察进程地址空间">
+<meta property="og:url" content="http://example.com/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在这篇文章中，我介绍了如何观察一个进程的地址空间">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg">
+<meta property="article:published_time" content="2022-12-10T17:43:06.018Z">
+<meta property="article:modified_time" content="2022-12-10T17:43:06.018Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '观察进程地址空间',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-11 01:43:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">观察进程地址空间</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-12-10T17:43:06.018Z" title="Created 2022-12-11 01:43:06">2022-12-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-12-10T17:43:06.018Z" title="Updated 2022-12-11 01:43:06">2022-12-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="观察进程地址空间"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在这篇文章中，我介绍了如何观察一个进程的地址空间，也就是maps</p>
+<p><a target="_blank" rel="noopener" href="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg">https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man5/proc.5.html">https://man7.org/linux/man-pages/man5/proc.5.html</a></p>
+<h2 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h2><p>Photo by Davor Eres: <a target="_blank" rel="noopener" href="https://www.pexels.com/photo/brown-and-white-duck-on-water-8230225/">https://www.pexels.com/photo/brown-and-white-duck-on-water-8230225/</a></p>
+<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码内容如下</p>
+<p>simplest_main.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>在一个shell中执行这个程序，再打开另一个shell，首先查看pid，然后通过proc&#x2F;pid&#x2F;maps和pmap命令两种方式来观察这个进程的maps情况</p>
+<p>如下所示，这个pid是187777，通过两种方式来观察，首先是proc&#x2F;187777&#x2F;maps文件，来看看内核给我们提供的信息，然后是通过pmap命令，pmap命令有很多中选项，这里选择了简单的-d选项，具体的含义可以参考help说明，同时，还有一个-XX的选项，是最详细的信息，内容实在是太多了，我放到了github中，看起来方便</p>
+<h2 id="实验结果观察"><a href="#实验结果观察" class="headerlink" title="实验结果观察"></a>实验结果观察</h2><h3 id="查看进程pid"><a href="#查看进程pid" class="headerlink" title="查看进程pid"></a>查看进程pid</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[liode@fedora:2:~]$ ps -a</span><br><span class="line">  PID TTY     TIME CMD</span><br><span class="line">  1451 tty2   00:04:25 Xorg</span><br><span class="line">  1462 tty2   00:00:00 gnome-session-b</span><br><span class="line"> 187777 pts/2  00:00:18 simplest_main</span><br><span class="line"> 187869 pts/3  00:00:00 ps</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过proc观察"><a href="#通过proc观察" class="headerlink" title="通过proc观察"></a><em>通过<strong>proc</strong>观察</em></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[liode@fedora:3:~]$ cat /proc/187777/maps</span><br><span class="line">00400000-00401000 r-xp 00000000 00:3f 30052196              /media/psf/Home/MyTec/gitrepos/kernel/process/simplest_main</span><br><span class="line">0041f000-00420000 r--p 0000f000 00:3f 30052196              /media/psf/Home/MyTec/gitrepos/kernel/process/simplest_main</span><br><span class="line">00420000-00421000 rw-p 00010000 00:3f 30052196              /media/psf/Home/MyTec/gitrepos/kernel/process/simplest_main</span><br><span class="line">ffff96430000-ffff965bd000 r-xp 00000000 00:21 353728           /usr/lib64/libc.so.6</span><br><span class="line">ffff965bd000-ffff965cc000 ---p 0018d000 00:21 353728           /usr/lib64/libc.so.6</span><br><span class="line">ffff965cc000-ffff965d0000 r--p 0018c000 00:21 353728           /usr/lib64/libc.so.6</span><br><span class="line">ffff965d0000-ffff965d2000 rw-p 00190000 00:21 353728           /usr/lib64/libc.so.6</span><br><span class="line">ffff965d2000-ffff965d9000 rw-p 00000000 00:00 0 </span><br><span class="line">ffff965f3000-ffff9661d000 r-xp 00000000 00:21 353725           /usr/lib/ld-linux-aarch64.so.1</span><br><span class="line">ffff9662c000-ffff9662e000 rw-p 00000000 00:00 0 </span><br><span class="line">ffff9662e000-ffff96630000 r--p 00000000 00:00 0             [vvar]</span><br><span class="line">ffff96630000-ffff96631000 r-xp 00000000 00:00 0             [vdso]</span><br><span class="line">ffff96631000-ffff96633000 r--p 0002e000 00:21 353725           /usr/lib/ld-linux-aarch64.so.1</span><br><span class="line">ffff96633000-ffff96635000 rw-p 00030000 00:21 353725           /usr/lib/ld-linux-aarch64.so.1</span><br><span class="line">ffffd7894000-ffffd78b5000 rw-p 00000000 00:00 0             [stack]</span><br><span class="line">[liode@fedora:4:~]$ </span><br></pre></td></tr></table></figure>
+
+<h4 id="通过pmap观察"><a href="#通过pmap观察" class="headerlink" title="通过pmap观察"></a><em>通过<strong>pmap</strong>观察</em></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[liode@fedora:6:~]$ pmap 187777 -d</span><br><span class="line">187777:  ./simplest_main</span><br><span class="line">Address      Kbytes Mode Offset      Device  Mapping</span><br><span class="line">0000000000400000    4 r-x-- 0000000000000000 000:0003f simplest_main</span><br><span class="line">000000000041f000    4 r---- 000000000000f000 000:0003f simplest_main</span><br><span class="line">0000000000420000    4 rw--- 0000000000010000 000:0003f simplest_main</span><br><span class="line">0000ffff96430000  1588 r-x-- 0000000000000000 000:00021 libc.so.6</span><br><span class="line">0000ffff965bd000   60 ----- 000000000018d000 000:00021 libc.so.6</span><br><span class="line">0000ffff965cc000   16 r---- 000000000018c000 000:00021 libc.so.6</span><br><span class="line">0000ffff965d0000    8 rw--- 0000000000190000 000:00021 libc.so.6</span><br><span class="line">0000ffff965d2000   28 rw--- 0000000000000000 000:00000  [ anon ]</span><br><span class="line">0000ffff965f3000   168 r-x-- 0000000000000000 000:00021 ld-linux-aarch64.so.1</span><br><span class="line">0000ffff9662c000    8 rw--- 0000000000000000 000:00000  [ anon ]</span><br><span class="line">0000ffff9662e000    8 r---- 0000000000000000 000:00000  [ anon ]</span><br><span class="line">0000ffff96630000    4 r-x-- 0000000000000000 000:00000  [ anon ]</span><br><span class="line">0000ffff96631000    8 r---- 000000000002e000 000:00021 ld-linux-aarch64.so.1</span><br><span class="line">0000ffff96633000    8 rw--- 0000000000030000 000:00021 ld-linux-aarch64.so.1</span><br><span class="line">0000ffffd7894000   132 rw--- 0000000000000000 000:00000  [ stack ]</span><br><span class="line">mapped: 2048K  writeable/private: 188K  shared: 0K</span><br><span class="line">详细观察的命令如下</span><br><span class="line">pmap 18777 -XX</span><br><span class="line">输出最详细的信息，内容太多了，我放到了githhub上</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/liodegwin/kernel/blob/main/process/pmap_everything.txt">https://github.com/liodegwin/kernel/blob/main/process/pmap_everything.txt</a></p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><h2 id="proc-x2F-pid-x2F-maps"><a href="#proc-x2F-pid-x2F-maps" class="headerlink" title="proc&#x2F;pid&#x2F;maps"></a>proc&#x2F;pid&#x2F;maps</h2><p>可以看到每一行都是一个VMA，对应一个内核中vm_area_struct结构，在我这个情况下，一共有15行，也就是15个vma</p>
+<p>那么具体来看看每一个vma都具有哪些信息喽，</p>
+<p>队医proc&#x2F;pid&#x2F;maps中输出的每一个列和含义，可以从man pages中查看到详细解释，如下</p>
+<p><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man5/proc.5.html">https://man7.org/linux/man-pages/man5/proc.5.html</a></p>
+<p>首先当然是address和lenth了，这非常好理解，这里可以观察到，都是4k的倍数了，因为是4k的page大小原因，其他倒是没什么可说的了</p>
+<p>然后是prem或者mode这个列，是权限的意思，rwx读写执行，很容易理解，p的话是private的意思了，如果一个进程里面的多个线程，那他们就会共享一些数据，会观察到那些线程里面有一些vma就不是p的</p>
+<p>值得注意的是，使用proc里面和pmap -XX输出的格式，这一列都是有p的，而pmap -d根本就没有p这个权限，而且它是5个位置，暂时我不知道为啥，</p>
+<p>然后是offset，这个是对于什么的偏移啊？对于path name这一列对应的文件的偏移喽，如果这个vma不对应一个文件，这个偏移就是0</p>
+<p>然后是设备号</p>
+<p>这个很好理解，没什么好说的，和offset一样，如果path name这一列有的话，设备号才有意义，不然就是个0</p>
+<p>然后是设备的inode</p>
+<p>这个和offset和设备号都是一样的，都只有在对应一个文件&#x2F;设备的时候才有意义，不然就是0</p>
+<p>最后是path name</p>
+<p>这一列是设备路径，如果对应一个设备的话，就是路径，如果没有的话，要么干脆就是空白的，像是proc中的那样，要么就是写上了[anon]，像是</p>
+<h2 id="pmap"><a href="#pmap" class="headerlink" title="pmap"></a>pmap</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/">http://example.com/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/12/linux%20books/" title="linux books"><img class="cover" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-hugo-heimendinger-1766217.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">linux books</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/10/%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="Process address space/进程地址空间"><img class="cover" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tanguy-sauvin-10467.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Process address space/进程地址空间</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.1.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%9F%E8%B0%A2"><span class="toc-number">1.2.</span> <span class="toc-text">感谢</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E8%A7%82%E5%AF%9F"><span class="toc-number">2.3.</span> <span class="toc-text">实验结果观察</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8Bpid"><span class="toc-number">2.3.1.</span> <span class="toc-text">查看进程pid</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87proc%E8%A7%82%E5%AF%9F"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">通过proc观察</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87pmap%E8%A7%82%E5%AF%9F"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">通过pmap观察</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#proc-x2F-pid-x2F-maps"><span class="toc-number">3.1.</span> <span class="toc-text">proc&#x2F;pid&#x2F;maps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pmap"><span class="toc-number">3.2.</span> <span class="toc-text">pmap</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/07/hello-world/" title="Hello World">Hello World</a><time datetime="2023-03-07T13:59:07.818Z" title="Created 2023-03-07 21:59:07">2023-03-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-karolina-wv-6929327.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符设备节点读写实验"/></a><div class="content"><a class="title" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验">字符设备节点读写实验</a><time datetime="2023-03-05T15:14:57.154Z" title="Created 2023-03-05 23:14:57">2023-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/14/%E6%97%B6%E9%97%B4/" title="时间"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-george-lebada-567540.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="时间"/></a><div class="content"><a class="title" href="/2022/12/14/%E6%97%B6%E9%97%B4/" title="时间">时间</a><time datetime="2022-12-14T15:02:01.997Z" title="Created 2022-12-14 23:02:01">2022-12-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/13/timer/" title="timer"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tina-nord-792416.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="timer"/></a><div class="content"><a class="title" href="/2022/12/13/timer/" title="timer">timer</a><time datetime="2022-12-13T15:57:07.758Z" title="Created 2022-12-13 23:57:07">2022-12-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/12/linux%20books/" title="linux books"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-hugo-heimendinger-1766217.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux books"/></a><div class="content"><a class="title" href="/2022/12/12/linux%20books/" title="linux books">linux books</a><time datetime="2022-12-12T15:30:14.820Z" title="Created 2022-12-12 23:30:14">2022-12-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
