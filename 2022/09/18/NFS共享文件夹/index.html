@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>NFS服务配置 | LiodeGwin's Blog</title><meta name="author" content="LiodeGwin"><meta name="copyright" content="LiodeGwin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="我希望通过mac访问服务器的一个文件夹，这个文章记录了我是如何做到的"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://madebyplayer.fun/2022/09/18/NFS%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: LiodeGwin","link":"链接: ","source":"来源: LiodeGwin's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'NFS服务配置',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-29 00:54:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/%E5%A4%B4%E5%83%8F.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-nana-lepre-1013335.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="LiodeGwin's Blog"><span class="site-name">LiodeGwin's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">NFS服务配置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-17T17:45:45.833Z" title="发表于 2022-09-18 01:45:45">2022-09-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-28T16:54:08.427Z" title="更新于 2022-11-29 00:54:08">2022-11-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="NFS服务配置"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1网络文件系统"><a href="#1网络文件系统" class="headerlink" title="1网络文件系统"></a>1网络文件系统</h1><h2 id="1-1参考"><a href="#1-1参考" class="headerlink" title="1.1参考"></a>1.1参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/aixiaoyang168/article/details/83782336">https://blog.csdn.net/aixiaoyang168/article/details/83782336</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.server-world.info/en/note?os=Fedora_34&p=nfs&f=1">https://www.server-world.info/en/note?os=Fedora_34&amp;p=nfs&amp;f=1</a></p>
+<p>鸟哥私房菜的第17章节</p>
+<p><a target="_blank" rel="noopener" href="https://linux.vbird.org/linux_server/centos6/0330nfs.php">https://linux.vbird.org/linux_server/centos6/0330nfs.php</a></p>
+<h2 id="1-2简介"><a href="#1-2简介" class="headerlink" title="1.2简介"></a>1.2简介</h2><p>nfs，可以让各个客户端可以访问服务器上的文件系统，也就是将服务器上的文件系统映射到客户端，方便文件之间的读写。</p>
+<h1 id="2服务端的配置"><a href="#2服务端的配置" class="headerlink" title="2服务端的配置"></a>2服务端的配置</h1><h2 id="2-1安装包"><a href="#2-1安装包" class="headerlink" title="2.1安装包"></a>2.1安装包</h2><p>对于fedora需要安装的包，如下。其实一般发行版都会自带的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install rpcbind</span><br><span class="line">sudo dnf install nfs-utils</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2写配置文件"><a href="#2-2写配置文件" class="headerlink" title="2.2写配置文件"></a>2.2写配置文件</h2><p>首先，需要配置&#x2F;etc&#x2F;exports文件，这个文件描述了，服务端有哪些文件夹可以共享，以及符合哪些条件的客户端可以访问这些文件夹，以及访问的权限等其他细节。</p>
+<p>我的配置文件内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/liode/nfs_dir 192.168.6.0/24(rw,sync,insecure,no_subtree_check,no_root_squash) 169.254.171.210(rw,sync,insecure,no_subtree_check,no_root_squash)</span><br></pre></td></tr></table></figure>
+<p>这里将&#x2F;home&#x2F;liode&#x2F;nfs_dir这个文件夹进行共享，可以分配给192.168.6.0&#x2F;24这个网段的所有ip，以及169.254.171.210这个ip，他们的访问权限等详细设定在括号里面有给出</p>
+<p>我的服务器的地址是192.168.6.101，我希望同一个局域网的所有设备都能够访问到我的共享文件夹。169.254.171.210是我的一个开发版，通过有线的方式直接连接到了服务器的网口，通过上面的设置，就能够达到我的目的</p>
+<p>注意：修改了配置文件后需要重新启动服务才会生效</p>
+<h2 id="2-3启动服务"><a href="#2-3启动服务" class="headerlink" title="2.3启动服务"></a>2.3启动服务</h2><p>fedora:</p>
+<p>需要依次启动 rpcbind 和 nfs-server两个服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable rpcbind</span><br><span class="line">systemctl start rpcbind </span><br><span class="line">systemctl enable nfs-server</span><br><span class="line">systemctl start nfs-server</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/nfs_1.png" alt="nfs_1"></p>
+<p><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/nfs_2.png" alt="nfs_2"></p>
+<h2 id="2-4防火墙配置"><a href="#2-4防火墙配置" class="headerlink" title="2.4防火墙配置"></a>2.4防火墙配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --add-service=rpc-bind --permanent</span><br><span class="line">firewall-cmd --add-service=mountd --permanent</span><br><span class="line">firewall-cmd --add-service=nfs --permanent</span><br><span class="line">firewall-cmd --reload </span><br></pre></td></tr></table></figure>
+
+<h1 id="3客户端的配置"><a href="#3客户端的配置" class="headerlink" title="3客户端的配置"></a>3客户端的配置</h1><h2 id="3-1安装包"><a href="#3-1安装包" class="headerlink" title="3.1安装包"></a>3.1安装包</h2><p>ubuntu</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install nfs-common</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2创建挂载点"><a href="#3-2创建挂载点" class="headerlink" title="3.2创建挂载点"></a>3.2创建挂载点</h2><p>创建一个需要共享的文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir nfs_dir</span><br><span class="line">chmod a+wr nfs_dir</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3观察服务器上有哪些可以共享的文件系统"><a href="#3-3观察服务器上有哪些可以共享的文件系统" class="headerlink" title="3.3观察服务器上有哪些可以共享的文件系统"></a>3.3观察服务器上有哪些可以共享的文件系统</h2><p>showmount -e 服务器的IP地址</p>
+<p><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/nfs_5.png" alt="nfs_5"></p>
+<h2 id="可以看到有哪些共享的文件系统，和他们对于客户端ip段的要求，如果本机符合ip的要求，就可以挂载，否则就要在服务器上增加一条配置了。"><a href="#可以看到有哪些共享的文件系统，和他们对于客户端ip段的要求，如果本机符合ip的要求，就可以挂载，否则就要在服务器上增加一条配置了。" class="headerlink" title="可以看到有哪些共享的文件系统，和他们对于客户端ip段的要求，如果本机符合ip的要求，就可以挂载，否则就要在服务器上增加一条配置了。"></a>可以看到有哪些共享的文件系统，和他们对于客户端ip段的要求，如果本机符合ip的要求，就可以挂载，否则就要在服务器上增加一条配置了。</h2><h2 id="3-4挂载NFS"><a href="#3-4挂载NFS" class="headerlink" title="3.4挂载NFS"></a>3.4挂载NFS</h2><p>挂载命令</p>
+<p>sudo mount 服务端IP地址:服务端共享的文件系统路径 挂载点路径</p>
+<p>对于我的mbp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount 192.168.6.101:/home/liode/nfs_dir nfs_dir</span><br></pre></td></tr></table></figure>
+
+<p>看看是否挂载成功</p>
+<p><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/nfs_3.png" alt="nfs_3"></p>
+<p>可以看到文件系统成功的挂载了上去</p>
+<p>而且，在GUI里面也可以看到多了一个位置</p>
+<p><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/nfs_4.png" alt="nfs_4"></p>
+<p>这样，在客户端上对nfs_dir进行的操作也会同步到服务端</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://madebyplayer.fun">LiodeGwin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://madebyplayer.fun/2022/09/18/NFS%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/">https://madebyplayer.fun/2022/09/18/NFS%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://madebyplayer.fun" target="_blank">LiodeGwin's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-nana-lepre-1013335.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/weichatpay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/weichatpay.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/zhifubao.jpg" target="_blank"><img class="post-qr-code-img" src="/img/zhifubao.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/09/06/%E5%B1%80%E5%9F%9F%E7%BD%91ssh%E8%AE%BF%E9%97%AE%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%96%B9%E6%A1%88/" title="局域网ssh访问多设备方案"><img class="cover" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-pixabay-2361.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">局域网ssh访问多设备方案</div></div></a></div><div class="next-post pull-right"><a href="/2022/09/19/%E6%97%B6%E9%97%B4/" title="时间"><img class="cover" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-george-lebada-567540.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">时间</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/%E5%A4%B4%E5%83%8F.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LiodeGwin</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/liodegwin"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liodegwin" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">关于Linux内核，驱动和野性与美丽的照片</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">1网络文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E5%8F%82%E8%80%83"><span class="toc-text">1.1参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E7%AE%80%E4%BB%8B"><span class="toc-text">1.2简介</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">2服务端的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-text">2.1安装包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%E5%86%99%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">2.2写配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-text">2.3启动服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE"><span class="toc-text">2.4防火墙配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">3客户端的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-text">3.1安装包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%E5%88%9B%E5%BB%BA%E6%8C%82%E8%BD%BD%E7%82%B9"><span class="toc-text">3.2创建挂载点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3%E8%A7%82%E5%AF%9F%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8F%AF%E4%BB%A5%E5%85%B1%E4%BA%AB%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.3观察服务器上有哪些可以共享的文件系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E6%9C%89%E5%93%AA%E4%BA%9B%E5%85%B1%E4%BA%AB%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%92%8C%E4%BB%96%E4%BB%AC%E5%AF%B9%E4%BA%8E%E5%AE%A2%E6%88%B7%E7%AB%AFip%E6%AE%B5%E7%9A%84%E8%A6%81%E6%B1%82%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%AC%E6%9C%BA%E7%AC%A6%E5%90%88ip%E7%9A%84%E8%A6%81%E6%B1%82%EF%BC%8C%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%8C%82%E8%BD%BD%EF%BC%8C%E5%90%A6%E5%88%99%E5%B0%B1%E8%A6%81%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%A2%9E%E5%8A%A0%E4%B8%80%E6%9D%A1%E9%85%8D%E7%BD%AE%E4%BA%86%E3%80%82"><span class="toc-text">可以看到有哪些共享的文件系统，和他们对于客户端ip段的要求，如果本机符合ip的要求，就可以挂载，否则就要在服务器上增加一条配置了。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4%E6%8C%82%E8%BD%BDNFS"><span class="toc-text">3.4挂载NFS</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/13/timer/" title="timer"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tina-nord-792416.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="timer"/></a><div class="content"><a class="title" href="/2022/12/13/timer/" title="timer">timer</a><time datetime="2022-12-13T15:53:41.371Z" title="发表于 2022-12-13 23:53:41">2022-12-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/12/linux%20books/" title="linux books"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-hugo-heimendinger-1766217.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux books"/></a><div class="content"><a class="title" href="/2022/12/12/linux%20books/" title="linux books">linux books</a><time datetime="2022-12-12T15:05:55.079Z" title="发表于 2022-12-12 23:05:55">2022-12-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="观察进程地址空间"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="观察进程地址空间"/></a><div class="content"><a class="title" href="/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="观察进程地址空间">观察进程地址空间</a><time datetime="2022-12-10T17:41:27.418Z" title="发表于 2022-12-11 01:41:27">2022-12-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/10/%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="Process address space/进程地址空间"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tanguy-sauvin-10467.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Process address space/进程地址空间"/></a><div class="content"><a class="title" href="/2022/12/10/%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="Process address space/进程地址空间">Process address space/进程地址空间</a><time datetime="2022-12-10T15:01:38.951Z" title="发表于 2022-12-10 23:01:38">2022-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/nginx_%E7%BB%99%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AEssl%E8%AF%81%E4%B9%A6/" title="nginx_给网站配置ssl证书"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-man-dy-1082179.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="nginx_给网站配置ssl证书"/></a><div class="content"><a class="title" href="/2022/12/05/nginx_%E7%BB%99%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AEssl%E8%AF%81%E4%B9%A6/" title="nginx_给网站配置ssl证书">nginx_给网站配置ssl证书</a><time datetime="2022-12-05T15:45:38.611Z" title="发表于 2022-12-05 23:45:38">2022-12-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LiodeGwin</div><div class="footer_custom_text">你好哇！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
