@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>内核定时器-简单使用 | LiodeGwin's Blog</title><meta name="author" content="LiodeGwin"><meta name="copyright" content="LiodeGwin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="介绍了内核定时器，相关的数据结构，简单的使用方法，做了一个实验，开启一个2s的定时器"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://madebyplayer.fun/2023/03/11/%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: LiodeGwin","link":"链接: ","source":"来源: LiodeGwin's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '内核定时器-简单使用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-11 14:38:52'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/%E5%A4%B4%E5%83%8F.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-magda-ehlers-789584.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="LiodeGwin's Blog"><span class="site-name">LiodeGwin's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">内核定时器-简单使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-11T06:32:50.000Z" title="发表于 2023-03-11 14:32:50">2023-03-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-11T06:38:52.259Z" title="更新于 2023-03-11 14:38:52">2023-03-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="内核定时器-简单使用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>介绍了内核定时器，相关的数据结构，简单的使用方法，做了一个实验，开启一个2s的定时器</p>
+<p>代码</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/liodegwin/kernel/tree/main/timer">https://github.com/liodegwin/kernel/tree/main/timer</a></p>
+<h1 id="感谢和参考"><a href="#感谢和参考" class="headerlink" title="感谢和参考"></a>感谢和参考</h1><p>《linux内核设计与实现》11.7章节</p>
+<p><a target="_blank" rel="noopener" href="https://wangquan.blog.csdn.net/article/details/122968025?spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-8-122968025-blog-128086137.pc_relevant_multi_platform_whitelistv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-8-122968025-blog-128086137.pc_relevant_multi_platform_whitelistv4&utm_relevant_index=12">https://wangquan.blog.csdn.net/article/details/122968025?spm=1001.2101.3001.6650.8&utm_medium&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8-122968025-blog-128086137.pc_relevant_multi_platform_whitelistv4&amp;depth_1-utm_source&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8-122968025-blog-128086137.pc_relevant_multi_platform_whitelistv4&amp;utm_relevant_index&#x3D;12</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cyhhh/article/details/126778268?spm=1001.2101.3001.6650.17&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-17-126778268-blog-52022787.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-17-126778268-blog-52022787.pc_relevant_default&utm_relevant_index=18">https://blog.csdn.net/cyhhh/article/details/126778268?spm=1001.2101.3001.6650.17&utm_medium&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-126778268-blog-52022787.pc_relevant_default&amp;depth_1-utm_source&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-126778268-blog-52022787.pc_relevant_default&amp;utm_relevant_index&#x3D;18</a></p>
+<h1 id="定时器结构"><a href="#定时器结构" class="headerlink" title="定时器结构"></a>定时器结构</h1><p>一个定时器用一个timer_list结构表示</p>
+<p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.15.82/source/include/linux/timer.h#L11">https://elixir.bootlin.com/linux/v5.15.82/source/include/linux/timer.h#L11</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">struct timer_list &#123;</span><br><span class="line">/*</span><br><span class="line"> * All fields that change during normal runtime grouped to the</span><br><span class="line"> * same cacheline</span><br><span class="line"> */</span><br><span class="line">struct hlist_node    entry;</span><br><span class="line">unsigned long        expires;</span><br><span class="line">void            (*function)(struct timer_list *);</span><br><span class="line">u32            flags;</span><br><span class="line"> </span><br><span class="line">#ifdef CONFIG_LOCKDEP</span><br><span class="line">struct lockdep_map    lockdep_map;</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>重要成员</p>
+<p>expires:超时事件，是绝对时间，也就是内核的jiffies值，当jiffies等于或者大于expires的时候，function指向的定时器函数就会被调用</p>
+<p>function：指向一个定时器回调函数，4.15以下版本的内核，中function的原型是void(*<a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v4.14.307/C/ident/function">function</a>)(unsignedlong);直到4.15之后，入口参数改变了</p>
+<p>flags：详细描述定时器配置,可选项如下</p>
+<p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.15.82/source/include/linux/timer.h#L64">https://elixir.bootlin.com/linux/v5.15.82/source/include/linux/timer.h#L64</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @TIMER_DEFERRABLE: A deferrable timer will work normally when the</span><br><span class="line"> * system is busy, but will not cause a CPU to come out of idle just</span><br><span class="line"> * to service it; instead, the timer will be serviced when the CPU</span><br><span class="line"> * eventually wakes up with a subsequent non-deferrable timer.</span><br><span class="line"> *</span><br><span class="line"> * @TIMER_IRQSAFE: An irqsafe timer is executed with IRQ disabled and</span><br><span class="line"> * it&#x27;s safe to wait for the completion of the running instance from</span><br><span class="line"> * IRQ handlers, for example, by calling del_timer_sync().</span><br><span class="line"> *</span><br><span class="line"> * Note: The irq disabled callback execution is a special case for</span><br><span class="line"> * workqueue locking issues. It&#x27;s not meant for executing random crap</span><br><span class="line"> * with interrupts disabled. Abuse is monitored!</span><br><span class="line"> *</span><br><span class="line"> * @TIMER_PINNED: A pinned timer will not be affected by any timer</span><br><span class="line"> * placement heuristics (like, NOHZ) and will always expire on the CPU</span><br><span class="line"> * on which the timer was enqueued.</span><br><span class="line"> *</span><br><span class="line"> * Note: Because enqueuing of timers can migrate the timer from one</span><br><span class="line"> * CPU to another, pinned timers are not guaranteed to stay on the</span><br><span class="line"> * initialy selected CPU. They move to the CPU on which the enqueue</span><br><span class="line"> * function is invoked via mod_timer() or add_timer(). If the timer</span><br><span class="line"> * should be placed on a particular CPU, then add_timer_on() has to be</span><br><span class="line"> * used.</span><br><span class="line"> */</span><br><span class="line">#define TIMER_CPUMASK        0x0003FFFF</span><br><span class="line">#define TIMER_MIGRATING        0x00040000</span><br><span class="line">#define TIMER_BASEMASK        (TIMER_CPUMASK | TIMER_MIGRATING)</span><br><span class="line">#define TIMER_DEFERRABLE    0x00080000</span><br><span class="line">#define TIMER_PINNED        0x00100000</span><br><span class="line">#define TIMER_IRQSAFE        0x00200000</span><br><span class="line">#define TIMER_INIT_FLAGS    (TIMER_DEFERRABLE | TIMER_PINNED | TIMER_IRQSAFE)</span><br><span class="line">#define TIMER_ARRAYSHIFT    22</span><br><span class="line">#define TIMER_ARRAYMASK        0xFFC00000struct timer_list &#123;</span><br><span class="line">/*</span><br><span class="line"> * All fields that change during normal runtime grouped to the</span><br><span class="line"> * same cacheline</span><br><span class="line"> */</span><br><span class="line">struct hlist_node    entry;</span><br><span class="line">unsigned long        expires;</span><br><span class="line">void            (*function)(struct timer_list *);</span><br><span class="line">u32            flags;</span><br><span class="line"> </span><br><span class="line">#ifdef CONFIG_LOCKDEP</span><br><span class="line">struct lockdep_map    lockdep_map;</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="定时器函数"><a href="#定时器函数" class="headerlink" title="定时器函数"></a>定时器函数</h1><h2 id="初始化定时器"><a href="#初始化定时器" class="headerlink" title="初始化定时器"></a>初始化定时器</h2><p>在低版本的内核中，初始化定时器使用函数init_timer，但是在高版本内核中已经没有了。取而代之的是使用</p>
+<p>宏 <strong>timer_setup</strong></p>
+<p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.19.17/source/include/linux/timer.h">https://elixir.bootlin.com/linux/v5.19.17/source/include/linux/timer.h</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * timer_setup - prepare a timer for first use</span><br><span class="line"> * @timer: the timer in question</span><br><span class="line"> * @callback: the function to call when timer expires</span><br><span class="line"> * @flags: any TIMER_* flags</span><br><span class="line"> *</span><br><span class="line"> * Regular timer initialization should use either DEFINE_TIMER() above,</span><br><span class="line"> * or timer_setup(). For timers on the stack, timer_setup_on_stack() must</span><br><span class="line"> * be used and must be balanced with a call to destroy_timer_on_stack().</span><br><span class="line"> */</span><br><span class="line">#define timer_setup(timer, callback, flags)            \</span><br><span class="line">__init_timer((timer), (callback), (flags))</span><br><span class="line">extern int mod_timer(struct timer_list *timer, unsigned long expires);</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数是一个指向定时器的指针，第二个函数是回调函数，第三个参数是定时器的flags</p>
+<p>注意，调用timer_setup并不会开始计时，只是初始化而已</p>
+<h2 id="开启定时器"><a href="#开启定时器" class="headerlink" title="开启定时器"></a>开启定时器</h2><p>调用add_timer之后，定时器就开始计时了</p>
+<p>void add_timer(struct timer_list *timer)</p>
+<h2 id="修改定时器"><a href="#修改定时器" class="headerlink" title="修改定时器"></a>修改定时器</h2><p>使用mod_timer来修改定时器的超时时间，当调用后，定时器也会开始计时</p>
+<p>int mod_timer(struct timer_list *timer, unsigned long expires);</p>
+<h2 id="删除定时器"><a href="#删除定时器" class="headerlink" title="删除定时器"></a>删除定时器</h2><p>使用del_timer来删除定时器</p>
+<p>int del_timer(struct timer_list * timer);</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>开启了一个2s的定时器，在模块安装的时候，开始，在模块卸载的时候，定时器也被删除，可以通过dmesg内核信息查看到打印信息</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/liodegwin/kernel/tree/main/timer">https://github.com/liodegwin/kernel/tree/main/timer</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;linux/jiffies.h&gt;</span><br><span class="line">#include &lt;linux/module.h&gt;</span><br><span class="line">#include &lt;linux/fs.h&gt;</span><br><span class="line">#include &lt;linux/timer.h&gt;</span><br><span class="line"> </span><br><span class="line">static struct timer_list timer_1;</span><br><span class="line">void timer_func(struct timer_list* ptl)&#123;</span><br><span class="line"> </span><br><span class="line">  printk(&quot;in %s\n&quot;,__FUNCTION__ );</span><br><span class="line">  mod_timer(&amp;timer_1, jiffies+msecs_to_jiffies(2000));</span><br><span class="line">&#125;</span><br><span class="line">static int __init tiemr_test_init(void)</span><br><span class="line">&#123;</span><br><span class="line">  printk(&quot;In %s %s %s\n&quot;,__FILE__,__FUNCTION__,__LINE__);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">  timer_1.expires = jiffies + msecs_to_jiffies(2000);</span><br><span class="line">  timer_setup(&amp;timer_1, timer_func, 0);</span><br><span class="line"> </span><br><span class="line">  add_timer(&amp;timer_1);</span><br><span class="line"> </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line">static void __exit tiemr_test_exit(void)</span><br><span class="line">&#123;</span><br><span class="line">  printk(&quot;In %s %s %s\n&quot;,__FILE__,__FUNCTION__,__LINE__);</span><br><span class="line">  del_timer(&amp;timer_1);</span><br><span class="line">&#125;</span><br><span class="line">module_init(tiemr_test_init);</span><br><span class="line">module_exit(tiemr_test_exit);</span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br><span class="line">MODULE_AUTHOR(&quot;liodeGwin@gmail.com&quot;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>观察看每2s输出一次打印信息直到模块被卸载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[ 174.376654] In /home/liode/nfs_dir/tmp/timer_test_1.c tiemr_test_init (efault)</span><br><span class="line">[ 176.429446] in timer_func</span><br><span class="line">[ 178.477630] in timer_func</span><br><span class="line">[ 180.525649] in timer_func</span><br><span class="line">[ 182.573641] in timer_func</span><br><span class="line">[ 184.621682] in timer_func</span><br><span class="line">[ 186.669393] in timer_func</span><br><span class="line">[ 188.717528] in timer_func</span><br><span class="line">[ 190.765575] in timer_func</span><br><span class="line">[ 192.813704] in timer_func</span><br><span class="line">[ 194.861760] in timer_func</span><br><span class="line">[ 196.909732] in timer_func</span><br><span class="line">[ 198.957690] in timer_func</span><br><span class="line">[ 201.005811] in timer_func</span><br><span class="line">[ 203.053696] in timer_func</span><br><span class="line">[ 205.101819] in timer_func</span><br><span class="line">[ 207.149806] in timer_func</span><br><span class="line">[ 209.197712] in timer_func</span><br><span class="line">[ 211.245846] in timer_func</span><br><span class="line">[ 213.293587] in timer_func</span><br><span class="line">[ 215.334934] in timer_func</span><br><span class="line">[ 217.369458] in timer_func</span><br><span class="line">[ 217.428013] In /home/liode/nfs_dir/tmp/timer_test_1.c tiemr_test_exit (efault)</span><br></pre></td></tr></table></figure>
+
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
+<li><p>如果在定时器还在开始的时候，卸载掉模块，会导致整个系统崩溃，我试了试在exit里面没有调用del_timer，就会导致系统崩溃</p>
+</li>
+<li><p>在源代码中的宏__LINE__没有被正确解析成行号，而是变成了错误(efault)，原因未知</p>
+</li>
+<li><p>定时器在不同版本的内核中产生了较大的变化，相应的代码被部分的改变了，需要根据需求使用不同的函数</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://madebyplayer.fun">LiodeGwin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://madebyplayer.fun/2023/03/11/%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">https://madebyplayer.fun/2023/03/11/%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://madebyplayer.fun" target="_blank">LiodeGwin's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-magda-ehlers-789584.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/weichatpay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/weichatpay.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/zhifubao.jpg" target="_blank"><img class="post-qr-code-img" src="/img/zhifubao.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验"><img class="cover" src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-karolina-wv-6929327.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">字符设备节点读写实验</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/%E5%A4%B4%E5%83%8F.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LiodeGwin</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/liodegwin"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liodegwin" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">关于Linux内核，驱动和野性与美丽的照片</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%84%9F%E8%B0%A2%E5%92%8C%E5%8F%82%E8%80%83"><span class="toc-text">感谢和参考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E7%BB%93%E6%9E%84"><span class="toc-text">定时器结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%87%BD%E6%95%B0"><span class="toc-text">定时器函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">初始化定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">开启定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">修改定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">删除定时器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C"><span class="toc-text">实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-text">实验结果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/03/11/%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" title="内核定时器-简单使用"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-magda-ehlers-789584.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="内核定时器-简单使用"/></a><div class="content"><a class="title" href="/2023/03/11/%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" title="内核定时器-简单使用">内核定时器-简单使用</a><time datetime="2023-03-11T06:32:50.000Z" title="发表于 2023-03-11 14:32:50">2023-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-karolina-wv-6929327.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符设备节点读写实验"/></a><div class="content"><a class="title" href="/2023/03/05/%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E8%8A%82%E7%82%B9%E8%AF%BB%E5%86%99%E5%AE%9E%E9%AA%8C/" title="字符设备节点读写实验">字符设备节点读写实验</a><time datetime="2023-03-05T05:34:23.000Z" title="发表于 2023-03-05 13:34:23">2023-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/13/timer/" title="timer"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-tina-nord-792416.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="timer"/></a><div class="content"><a class="title" href="/2022/12/13/timer/" title="timer">timer</a><time datetime="2022-12-13T15:53:41.371Z" title="发表于 2022-12-13 23:53:41">2022-12-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/12/linux%20books/" title="linux books"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-hugo-heimendinger-1766217.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux books"/></a><div class="content"><a class="title" href="/2022/12/12/linux%20books/" title="linux books">linux books</a><time datetime="2022-12-12T15:05:55.079Z" title="发表于 2022-12-12 23:05:55">2022-12-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="观察进程地址空间"><img src="https://storebarrel1-1308416823.cos.ap-shanghai.myqcloud.com/img/pexels-davor-eres-8230225.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="观察进程地址空间"/></a><div class="content"><a class="title" href="/2022/12/11/%E8%A7%82%E5%AF%9F%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" title="观察进程地址空间">观察进程地址空间</a><time datetime="2022-12-10T17:41:27.418Z" title="发表于 2022-12-11 01:41:27">2022-12-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LiodeGwin</div><div class="footer_custom_text">你好哇！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
